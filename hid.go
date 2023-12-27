@@ -38,7 +38,15 @@ package hid
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "hidapi.h"
+
+
+void initLocale()
+{
+    setlocale(LC_ALL, "");
+}
+
 */
 import "C"
 
@@ -73,6 +81,7 @@ func wrapErr(err error) error {
 // Init initializes the hid package. Calling this function is not strictly
 // necessary, however it is recommended for concurrent programs.
 func Init() error {
+	C.initLocale()
 	if res := C.hid_init(); res == -1 {
 		return wrapErr(Error())
 	}
