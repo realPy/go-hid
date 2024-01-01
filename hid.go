@@ -407,7 +407,7 @@ func (d *Device) Error() error {
 	if wcs == nil {
 		return nil // no error
 	}
-	return errors.New(wcstogo(wcs))
+	return errors.New(_wcstogo(wcs, true))
 }
 
 var _ io.ReadWriteCloser = (*Device)(nil)
@@ -419,7 +419,7 @@ func Error() error {
 	if wcs == nil {
 		return nil // no error
 	}
-	return errors.New(wcstogo(wcs))
+	return errors.New(_wcstogo(wcs, true))
 }
 
 // APIVersion describes the HIDAPI version.

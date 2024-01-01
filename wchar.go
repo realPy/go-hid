@@ -63,6 +63,11 @@ func gotowcs(s string) *C.wchar_t {
 
 // wcstogo converts a C wide string to a Go string.
 func wcstogo(wcs *C.wchar_t) string {
+	return _wcstogo(wcs, false)
+}
+
+func _wcstogo(wcs *C.wchar_t, avoidpanic bool) string {
+
 	if wcs == nil {
 		return ""
 	}
@@ -72,6 +77,9 @@ func wcstogo(wcs *C.wchar_t) string {
 	defer C.free(unsafe.Pointer(cs))
 
 	if n, err := C.wcstombs(cs, wcs, n); C.iswerr(n) {
+		if avoidpanic {
+			return err.Error()
+		}
 		panic(err)
 	}
 	return C.GoString(cs)
