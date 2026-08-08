@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Steven Stallion <sstallion@gmail.com>
+// Copyright (c) 2025 Steven Stallion <sstallion@gmail.com>
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -43,6 +43,13 @@ func (d *Device) GetContainerID(guid *windows.GUID) error {
 		return wrapErr(d.Error())
 	}
 	return nil
+}
+
+// SetWriteTimeout sets the timeout when sending output reports on Win32. The
+// default timeout is 1 second. Setting the timeout to 0 enables non-blocking
+// behavior while -1 blocks until the write completes or returns an error.
+func (d *Device) SetWriteTimeout(timeout int) {
+	C.hid_winapi_set_write_timeout(d.handle, C.ulong(timeout));
 }
 
 // ReconstructDescriptorData reconstructs a HID Report Descriptor from a Win32
